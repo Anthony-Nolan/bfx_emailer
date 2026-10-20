@@ -6,17 +6,20 @@ import os
 
 ENV = {
     'host': os.environ.get('SMTP_HOST', None),
-    'port': (
-        int(os.environ['SMTP_PORT']
-        if os.environ.get('SMTP_PORT', None)
-        else None
-    )),
+    'port': os.environ.get('SMTP_PORT', None),
     'address': os.environ.get('SMTP_ADDRESS'),
     'password': os.environ.get('SMTP_PASSWORD')
 }
 
 for key, value in ENV.items():
     if not value:
-        raise ValueError(f'Environment variable {key} is not set')
+        raise ValueError(f'Environment variable SMTP_{key.upper()} is not set')
+
+try:
+    ENV['port'] = int(ENV['port'])
+except ValueError:
+    raise ValueError(
+        f'Environment variable SMTP_PORT must be an integer, got {ENV["port"]!r}'
+    ) from None
 
 

@@ -2,6 +2,7 @@
 This package sends emails using SMTP. It supports attachments, CC, and BCC.
 """
 import os
+from typing import Union
 from smtplib import SMTP
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -12,20 +13,24 @@ from .env import ENV
 
 
 def send_email(
-    recipients: list,
+    recipients: Union[list, str],
     subject: str = '',
     body: str = '',
     files: list = None,
-    cc: list = None,
-    bcc: list = None,
+    cc: Union[list, str] = None,
+    bcc: Union[list, str] = None,
 ) -> None:
     """
     Send an email with optional attachments, CC, and BCC.
     Emails may be a list or ; separated string.
     """
 
-    cc = cc or []
-    bcc = bcc or []
+    recipients = _to_address_list(recipients)
+    cc = _to_address_list(cc)
+    bcc = _to_address_list(bcc)
+
+    if not recipients:
+        raise ValueError('At least one recipient is required')
 
     # Combine all recipients for SMTP delivery
     all_recipients = recipients + cc + bcc
@@ -74,11 +79,28 @@ def send_email(
         smtp_object.quit()
 
 
+def _to_address_list(addresses: Union[list, str, None]) -> list:
+    """
+    Normalise a list or ; separated string of addresses into a list.
+    List items may themselves contain ; separated addresses.
+    """
+    if not addresses:
+        return []
+    if isinstance(addresses, str):
+        addresses = [addresses]
+    return [
+        address.strip()
+        for item in addresses
+        for address in item.split(';')
+        if address.strip()
+    ]
+
+
 def _get_smtp_conn() -> SMTP:
     smtp_object = SMTP(ENV['host'])
     smtp_object.connect(
         host=ENV['host'],
-        port=int(ENV['port'])
+        port=ENV['port']
     )
     smtp_object.starttls()
     smtp_object.login(
