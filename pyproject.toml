@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bfx_emailer"
+version = "0.1.0"
+description = "A simple emailer for BFX notifications"
+readme = "README.md"
+requires-python = ">3.6"
+dependencies = []
+
+[project.scripts]
+bfxemail = "bfxemailer.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["bfxemail*"]
