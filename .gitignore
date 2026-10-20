@@ -1,7 +1,14 @@
+#ignore python env
+env/
+
+# Ignore env file
+.env
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
+
 
 # C extensions
 *.so
