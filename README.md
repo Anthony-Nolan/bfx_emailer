@@ -60,8 +60,6 @@ pip install "git+ssh://git@github.com/richardnatarajanAN/bfx_emailer.git"
 pip install "git+https://github.com/richardnatarajanAN/bfx_emailer.git"
 ```
 
-> Note: pip doesn't accept the scp-style address `git@github.com:richardnatarajanAN/bfx_emailer.git`. Use the `git+ssh://` form above, which replaces the `:` after the host with `/`.
-
 Installing the package adds a `bfxemail` command to your environment.
 
 ## Usage
@@ -89,15 +87,15 @@ Examples:
 
 ```bash
 # Simple message
-bfxemail -r alice@example.com -s "Pipeline finished" -b "All samples processed."
+bfxemail -r richard@example.com -s "Pipeline results" -b "Something went wrong..."
 
 # Several recipients, CC, BCC and attachments
 bfxemail \
-    -r alice@example.com bob@example.com \
-    --cc team@example.com \
-    --bcc audit@example.com \
+    -r tom@example.com jonny@example.com \
+    --cc ig@example.com \
+    --bcc bfx@example.com \
     -s "QC report" \
-    -b "Please find the QC report attached." \
+    -b "Good luck with the QC" \
     -f results/qc_report.html results/summary.tsv
 ```
 
