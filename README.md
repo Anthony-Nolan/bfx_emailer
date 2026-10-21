@@ -25,7 +25,7 @@ Set them in one of two ways.
 
 ```bash
 cp .env.blank .env
-# Edit .env and fill in each value
+# Edit .env and fill in each value. Enclose values in single-quotes if special characters are included.
 source .env
 ```
 
